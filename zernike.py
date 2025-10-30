@@ -60,6 +60,8 @@ def zernike(n, m, rho, theta, fieldcache = None):
         fieldcache[(n,m)] = field
     return field
 
+# clean this whenever you change rho - range and resolution.
+global_fieldcache={}
 @cache
 def generate_basis(n_max, resolution):
     """
@@ -93,7 +95,7 @@ def generate_basis(n_max, resolution):
     for n in range_n:
         for m in range(-n, n+1):
             if (n - m) % 2 == 0:
-                Z = zernike(n, m, rho, theta, fieldcache)
+                Z = zernike(n, m, rho, theta, global_fieldcache)
                 Z[~mask] = 0.0
                 basis.append(Z)
     return basis
