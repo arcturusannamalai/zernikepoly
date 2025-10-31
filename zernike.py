@@ -29,14 +29,16 @@ def radial(n, m, rho):
     """
     if (n - m) % 2:
         return np.zeros_like(rho)
-    R = np.zeros_like(rho, dtype=float)
     k_max = (n - m) // 2
+    coeffs = np.zeros((2*k_max+1,))
     for k in range(k_max + 1):
         num = (-1)**k * factorial(n - k)
         den = factorial(k)
         inv = 1.0 /(factorial((n + m)//2 - k) * factorial((n - m)//2 - k))
-        R += (num/den) * inv * rho**(n - 2*k)
-    return R
+        #R += (num/den) * inv * rho**(n - 2*k)
+        coeffs[2*k] = (num/den) * inv
+        
+    return np.polyval(coeffs,rho)
 
 def zernike(n, m, rho, theta, fieldcache = None):
     """

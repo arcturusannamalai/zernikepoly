@@ -18,14 +18,16 @@ function R = radial(n, m, rho)
         R = zeros(size(rho));
         return;
     end
-    R = zeros(size(rho));
     k_max = (n - m) / 2;
+    coeffs = zeros(1,2*k_max+1);
     for k = 0:k_max
         num = (-1)^k * factorial(n - k);
         den = factorial(k);
         invTerm = 1.0 / ( factorial((n + m)/2 - k) * factorial((n - m)/2 - k) );
-        R = R + (num/den) * invTerm .* rho.^(n - 2*k);
+        %R = R + (num/den) * invTerm .* rho.^(n - 2*k);
+        coeffs(1+k*2) = (num/den) * invTerm ;
     end
+    R = polyval(coeffs,rho);
 end
 
 function field = zernike(n, m, rho, theta, fieldcache)
